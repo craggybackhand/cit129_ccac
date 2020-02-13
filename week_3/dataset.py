@@ -12,11 +12,11 @@ def processjailCSV():
     
     for row in reader:
         if row['Date'] == focusdate:
-            # ask dictionary if race key is already present in dictionary
+            #sets key to 1 if index not already present
+            #initiates new index with the contents of 'Race' and sets its 
+            #key to 1
             if row['Race'] not in racecount:
-                #sets key to 1 if index not already present
-                #initiates new index with the contents of 'Race' and sets its 
-                #key to 1
+                
                 racecount[(row['Race'])] = 1
             else:
                 racecount[(row['Race'])] += 1
