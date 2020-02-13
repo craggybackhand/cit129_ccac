@@ -2,61 +2,48 @@
 
 ## Revision history (2020-02-12)
 # Created the following functions:
-#1) open_external_file; 2) user_binary_symbol_on; 3)
+# 1) open_external_file; 2) user_binary_symbol_on; 3)
 # replace_text_simple; 4) replace_text_negative
 # Added these changes:
 # updated existing functions to take the variable containing user's 'on' value
 # updated the functions to use the imported text file instead of the
-hard coded binary icon
+# hard coded binary icon
+# Added function to configure the binary file into a grid
+# Removed the print_icon function due to input variable restraints and added
+# to the main() 
+# Edited the open_external_file function to run simpler
 
-
-def create_icon_grid():
-    '''Creates a grid with hardcoded values for the content of the icon.
-
-    This static function defines variables with entries of 1 and 0 for
-each of the
-    ten lines in the icon grid. 1s represent shaded cells and 0s represent empty
-    cells. The individual lines are then packed into an icon_grid
-list. This list
-    is returned by the function for use elsewhere. This function could
-be altered
-    with hardcoded grid values for other printable icons.
-    '''
-    line_1 = [0, 0, 0, 0, 1, 1, 1, 0, 0, 0]
-    line_2 = [0, 0, 0, 1, 0, 0, 0, 1, 0, 0]
-    line_3 = [1, 1, 1, 0, 0, 1, 0, 1, 0, 0]
-    line_4 = [0, 0, 1, 0, 0, 0, 0, 1, 0, 0]
-    line_5 = [1, 1, 1, 0, 0, 0, 0, 1, 0, 0]
-    line_6 = [0, 0, 0, 1, 1, 1, 0, 1, 0, 0]
-    line_7 = [0, 0, 0, 0, 0, 1, 0, 1, 0, 0]
-    line_8 = [0, 0, 0, 0, 0, 1, 0, 1, 0, 0]
-    line_9 = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
-    line_10 = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-    icon_grid = [
-        line_1,
-        line_2,
-        line_3,
-        line_4,
-        line_5,
-        line_6,
-        line_7,
-        line_8,
-        line_9,
-        line_10
-        ]
-    return icon_grid
 
 def open_external_file():
     """
     This function will take in a plaintext file of non-separated
-values in a single string inside a list.
+values in a single string inside a list. This file is hard coded and only editable
+within the code itself. To change, simple change the name of the text file in
+the parentheses after open() to what your file is called.
 
     """
-    with open('binary.txt') as file:
+    with open('test_file.txt') as file:
         read_the_file = file.read()
-        list_of_bytes = []
-        list_of_bytes.append(read_the_file)
-    return list_of_bytes
+    return read_the_file
+
+def configure_file(long_list):
+    """
+    Take the long string in list form imported from the external file and
+    sequence it into ten segments (lines) each ten characters long.
+    """
+    better_list = []
+    long_list = list(long_list)
+    better_list.append(long_list[0:10])
+    better_list.append(long_list[10:20])
+    better_list.append(long_list[20:30])
+    better_list.append(long_list[30:40])
+    better_list.append(long_list[40:50])
+    better_list.append(long_list[50:60])
+    better_list.append(long_list[60:70])
+    better_list.append(long_list[70:80])
+    better_list.append(long_list[80:90])
+    better_list.append(long_list[90:100])
+    return better_list
 
 def user_binary_symbol_on():
     """
@@ -68,8 +55,7 @@ contains a length value of one.
     user_choice_on = ""
     max_length = '1'
     while user_choice_on == "":
-        user_choice_on = input("\nPlease enter the single value which
-indicates 'on' (such as '1'): ")
+        user_choice_on = input("\nPlease enter the single value which indicates 'on' (such as '1'): ")
         if len(user_choice_on) > len(max_length):
             print("\nYou can only enter one value. Please try again.")
             user_choice_on = ""
@@ -104,7 +90,7 @@ the user's on value and prints
         print("@", end=" ")
 
 
-def simple_print(user_value):
+def simple_print(icon, user_value):
     '''Prints the simplest version of the icon.
 
     It loops over the icon_grid, unpacking the full list of lists. It then
@@ -112,13 +98,13 @@ def simple_print(user_value):
     prints the appropriate character for each value. It uses space separators
     and return characters to space the output text in a pleasing manner.
     '''
-    icon_grid = open_external_file()
+    icon_grid = icon
     for line in icon_grid:
         for cell in line:
             replace_text_simple(cell, user_value)
         print("\r")
 
-def mirror_print(user_value):
+def mirror_print(icon, user_value):
     '''Prints a mirror image version of the icon.
 
     This function is very similar to the simple_print() function. It loops
@@ -129,14 +115,14 @@ appropriate character
     for each value. It uses space separators and return characters to space the
     output text in a pleasing manner.
     '''
-    icon_grid = create_icon_grid()
+    icon_grid = icon
     for line in icon_grid:
         line.reverse()
         for cell in line:
             replace_text_negative(cell, user_value)
         print("\r")
 
-def negative_print(user_value):
+def negative_print(icon, user_value):
     '''Prints a photo negative version of the icon.
 
     This is very similar to simple_print(), but reverses the printed characters.
@@ -146,7 +132,7 @@ then unpacks
     "negative" character for each value. It uses space separators and return
     characters to space the output text in a pleasing manner.
     '''
-    icon_grid = create_icon_grid()
+    icon_grid = icon
     for line in icon_grid:
         for cell in line:
             replace_text_negative(cell, user_value)
@@ -175,24 +161,22 @@ returns it as
             user_choice = ""
     return user_choice
 
-def icon_printer(user_choice, binary_value):
-    '''Prints the user's chosen icon.
-
-    This function takes the user_choice variable from the icon_menu() function
-    and calls the relevant print function for the choice they made.
-    '''
-    if user_choice == "1":
-        simple_print(binary_value)
-    if user_choice == "2":
-        mirror_print(binary_value)
-    if user_choice == "3":
-        negative_print(binary_value)
-
 def main():
+# Open the hard coded binary file and assign it to a variable
     from_a_file = open_external_file()
+# Take the binary variable and compact it into a 10x10 grid
+    new_grid_icon = configure_file(from_a_file)
+# Ask the user what their 'on' value is in the text file
     full_value = user_binary_symbol_on()
+# Print the menu, asking the user which version of the image they want
     user_choice = icon_menu()
-    icon_printer(user_choice, full_value)
+# Based on user input. print the version of the icon
+    if user_choice == "1":
+        simple_print(new_grid_icon, full_value)
+    if user_choice == "2":
+        mirror_print(new_grid_icon, full_value)
+    if user_choice == "3":
+        negative_print(new_grid_icon, full_value)
 
 if __name__ == "__main__":
     main()
