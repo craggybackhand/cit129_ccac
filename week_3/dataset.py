@@ -16,11 +16,11 @@ def processjailCSV():
             #initiates new index with the contents of 'Race' and sets its 
             #key to 1
             if row['Race'] not in racecount:
-                
                 racecount[(row['Race'])] = 1
             else:
                 racecount[(row['Race'])] += 1
                 #increments counter if race index already present
+    
     file.close
     
     print(racecount)

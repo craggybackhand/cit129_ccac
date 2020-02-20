@@ -103,8 +103,8 @@ def main():
     range. This sorted dictionary is sliced to return only the top ten results with the highest
     number of violations.
     """
-    start_date = datetime.date(2018, 1, 1)
-    end_date = datetime.date(2018, 12, 31) 
+    start_date = datetime.date(2016, 1, 1)
+    end_date = datetime.date(201, 12, 31) 
     id_count = violation_counter(start_date, end_date)  
     restaurant_key = key_maker()
     violation_count = violation_mapper(id_count, restaurant_key)
