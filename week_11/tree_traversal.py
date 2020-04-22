@@ -3,6 +3,9 @@ import re
 import argparse
 
 def parse_arguments():
+    """
+    Takes in an argument defining a filepath.
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--directory', required=True, help="""Path to the directory 
         you'd like to traverse.""")
@@ -11,12 +14,19 @@ def parse_arguments():
     return dir_path
 
 def extension_regexp():
-# regular expression that matches a . followed by alpha characters, $ starts from end of string
-# important to remember that this regexp will match any number of cases in the string
+    """
+    Defines a regular expression to match filename extensions.
+    """
+    # regular expression that matches a . followed by alpha characters, $ starts from end of string
+    # important to remember that this regexp will match any number of cases in the string
     regexp = re.compile('(\.\w+)$')
     return regexp
 
 def traverse(start_loc, regexp):
+    """
+    Traverses a file tree starting at start_loc. Tabulates information and prints information about
+    filetree and files within.
+    """
     total_file = 0
     total_jpeg = 0
     total_kb = 0
@@ -28,6 +38,9 @@ def traverse(start_loc, regexp):
     print_total_information(total_file, total_jpeg, total_kb)
 
 def examine_file_tree(root_dir, filelist, regexp):
+    """
+    Iterates through a filelist. Tabulates information about each directory.
+    """
     dir_file_count = 0
     dir_jpeg_count = 0
     dir_total_kb = 0
@@ -44,6 +57,9 @@ def examine_file_tree(root_dir, filelist, regexp):
             
 
 def get_file_information(filepath, regexp):
+    """
+    Examines a filepath to determine its extension and filesize.
+    """
     kb_filesize = (os.path.getsize(filepath) / 10**3)
     extension = False
     # creates a boolean match object by searching the regexp against the filepath string
@@ -55,6 +71,9 @@ def get_file_information(filepath, regexp):
     return extension, kb_filesize
 
 def print_file_information(filepath, kb_filesize, extension):
+    """
+    Pretty-prints information about an individual file.
+    """
     print('filepath:', filepath)
     print('file size: ', end='')
     print(kb_filesize, 'KB')
@@ -64,6 +83,9 @@ def print_file_information(filepath, kb_filesize, extension):
         print('extension: file has no extension' )
 
 def print_total_information(total_file, total_jpeg, total_kb):
+    """
+    Pretty-prints information about the traversed directory.
+    """
     avg_file_size = (total_kb / total_file)
     print('\n*****************************')
     print('Number of file objects:', total_file)
@@ -71,7 +93,6 @@ def print_total_information(total_file, total_jpeg, total_kb):
     print('Average file size:', avg_file_size, 'KB')
 
 def main():
-# starts walking from the directory where script is run
     dir_path = parse_arguments()
     regexp = extension_regexp()
     traverse(dir_path, regexp)
